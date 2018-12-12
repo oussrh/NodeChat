@@ -1,0 +1,40 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    overflow: hidden;
+    overflow-y: hidden;
+}
+
+
+.container{
+    height: 100vh;
+}
+
+header{
+    height: 10vh;
+}
+
+main{
+    height: 60vh;
+}
+
+aside{
+    overflow: scroll;
+    overflow-x: hidden;
+    
+}
+
+footer{
+    height: 10vh;
+}
+
+#login{
+    background: forestgreen;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}

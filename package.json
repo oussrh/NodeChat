@@ -1,0 +1,21 @@
+{
+  "name": "NodeChat",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rhoni oussama",
+  "license": "ISC",
+  "engines": {
+    "node": "8.14.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "bulma": "^0.7.2",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mongo": "^0.1.0",
+    "mongoose": "^5.3.16"
+  }
+}
