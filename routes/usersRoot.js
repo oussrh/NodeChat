@@ -1,4 +1,4 @@
-module.exports = (app, userModel,mongo) => {
+module.exports = (app, userModel, mongo) => {
 
     app.post("/user", (req, res) => {
         const newUser = new userModel({
@@ -24,9 +24,35 @@ module.exports = (app, userModel,mongo) => {
 
     });
 
-    app.delete("/user/:id",(req,res) => {
+    app.get("/user/:id", (req, res) => {
         let id = new mongo.ObjectId(req.params.id)
-        let query = userModel.deleteOne({_id: id});
+        let query = userModel.find({
+            _id: id
+        });
+        query.exec(function (err, data) {
+            res.send(data);
+        });
+
+    });
+
+    app.delete("/user/:id", (req, res) => {
+        let id = new mongo.ObjectId(req.params.id);
+        let query = userModel.deleteOne({
+            _id: id
+        });
+        query.exec(function (err, data) {
+            res.send(data);
+        });
+    });
+
+    app.put("/user/pwd/:id", (req, res) => {
+        let id = new mongo.ObjectId(req.params.id);
+        let modif = {
+            password: req.body.password
+        }
+        let query = userModel.updateOne({
+            _id: id
+        }, modif);
         query.exec(function (err, data) {
             res.send(data);
         });
