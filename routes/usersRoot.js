@@ -1,6 +1,6 @@
 module.exports = (app, userModel, mongo) => {
 
-    app.post("/user", (req, res) => {
+    app.post("/user",(req, res) => {
         const newUser = new userModel({
             user: req.body.user
             // password: 'sdgfsd',
@@ -16,17 +16,17 @@ module.exports = (app, userModel, mongo) => {
         });
     });
 
-    app.get("/user", (req, res) => {
-        let query = userModel.find({});
+    app.get("/user", async (req, res) => {
+        let query = await userModel.find({});
         query.exec(function (err, data) {
             res.send(data);
         });
 
     });
 
-    app.get("/user/:id", (req, res) => {
+    app.get("/user/:id", async (req, res) => {
         let id = new mongo.ObjectId(req.params.id)
-        let query = userModel.find({
+        let query = await userModel.find({
             _id: id
         });
         query.exec(function (err, data) {
@@ -35,9 +35,9 @@ module.exports = (app, userModel, mongo) => {
 
     });
 
-    app.delete("/user/:id", (req, res) => {
+    app.delete("/user/:id", async (req, res) => {
         let id = new mongo.ObjectId(req.params.id);
-        let query = userModel.deleteOne({
+        let query = await userModel.deleteOne({
             _id: id
         });
         query.exec(function (err, data) {
@@ -45,12 +45,12 @@ module.exports = (app, userModel, mongo) => {
         });
     });
 
-    app.put("/user/pwd/:id", (req, res) => {
+    app.put("/user/pwd/:id", async (req, res) => {
         let id = new mongo.ObjectId(req.params.id);
         let modif = {
             password: req.body.password
         }
-        let query = userModel.updateOne({
+        let query = await userModel.updateOne({
             _id: id
         }, modif);
         query.exec(function (err, data) {
