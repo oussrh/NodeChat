@@ -1,5 +1,6 @@
 module.exports = (app, chatModel, userModel , mongo) => {
 
+    //ADD new chat
     app.post("/chat/i",(req,res)=>{
         const newChat = new chatModel({
             userId : new mongo.ObjectId(req.body.userId),
@@ -11,7 +12,7 @@ module.exports = (app, chatModel, userModel , mongo) => {
             res.sendStatus(200);
         });
     });
-
+    //GET info chat
     app.get("/chat/i/:id",(req, res) => {
         let id = new mongo.ObjectId(req.params.id);
         let query = chatModel.find({
@@ -21,7 +22,7 @@ module.exports = (app, chatModel, userModel , mongo) => {
             res.send(data);
         });
     });
-
+    //GET friend info
     app.get("/chat/with/:id",(req, res) => {
         let id = new mongo.ObjectId(req.params.id);
         let query = userModel.find({
@@ -32,6 +33,7 @@ module.exports = (app, chatModel, userModel , mongo) => {
         });
     });
 
+    // DELETE Chat
     app.delete("/chat/with/:id",(req,res)=>{
         let id = new mongo.ObjectId(req.params.id);
         let query = chatModel.deleteOne({

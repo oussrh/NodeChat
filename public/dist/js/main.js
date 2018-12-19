@@ -80,7 +80,7 @@ const showChatList = list =>{
         panel.innerHTML = "";
         let a = document.createElement('a');
         a.className = "panel-block";
-        a.id = l._id;
+        a.id = l._id;//chat id;
         a.addEventListener("click",openDiscussion);
         let response = await fetch(url+"/chat/with/"+l.withId,{method:"GET"})
         .catch(err => console.warn(err));
@@ -89,12 +89,54 @@ const showChatList = list =>{
         panel.appendChild(a);
     })
 }
+//*********************************************************************/
+const openDiscussion = async i => {
+    let input = document.querySelector('.inputmsg');
+    let idchat = i.currentTarget.id;
+    input.id = idchat;
+    let response = await fetch(`${url}/msg/${idchat}`, {method:"GET"})
+    .catch(err => console.warn(err));
+    response = await response.json();
+    showDiscussion(response);
+}
 
-const openDiscussion = id => {
-    let section = document.getElementById('msgSec');
+const showDiscussion = (d) => {
+    let input = document.querySelector('.inputmsg');
+    input.value ="";
+    let section = document.getElementById('msgflow');
+    section.innerHTML = ''
+    d.map( m =>{
+        let p = document.createElement('p');
+        p.className = "msgChat"
+        p.innerHTML = m.msg;
+        section.appendChild(p);
+    })
     
+    section.scrollTop = section.scrollHeight;
+
 }
 
 getChatLsit();
-//******************************************************* */
+//********************************************************************/
 
+const addMsg = async m =>{
+    let idchat = m.currentTarget.id;
+    await fetch(`${url}/msg`,{
+        method: "POST",
+        headers : {'Content-type': 'application/json'},
+        body: JSON.stringify({
+            userId: userid,
+            chatId: m.currentTarget.id,
+            msg: m.currentTarget.value
+        })
+    })
+    .catch(err => console.warn(err));
+    let response = await fetch(`${url}/msg/${idchat}`, {method:"GET"})
+    .catch(err => console.warn(err));
+    response = await response.json();
+    showDiscussion(response);
+
+}
+document.querySelector('.inputmsg').addEventListener('keyup',(e) =>{
+    if(e.keyCode === 13) addMsg(e)
+})

@@ -92,13 +92,24 @@ aside #searchDiv{
     padding: 0 !important;
 }
 
-#msgSec .msgflow{
-    height: 90%;
-    background: red;
-    overflow: scroll;
+#msgSec #msgflow{
+    height: 54vh;
+    background:rgb(180, 180, 180);
+    overflow-y: scroll;
 }
 
 #msgSec .msginput{
     height: 5vh;
     padding: 0;
+}
+
+.msgChat{
+    padding: 10px;
+    margin-left: 20px;
+    margin-top :10px;
+    border-radius: 20px;
+    background: rgb(36, 167, 255);
+    color : #fff;
+    font: 12px Arial;
+    max-width: 40%;
 }
