@@ -1,12 +1,12 @@
 module.exports = (app, userModel, mongo) => {
-
+    //Add new user
     app.post("/user",(req, res) => {
         const newUser = new userModel({
-            user: req.body.user
-            // password: 'sdgfsd',
-            // name: 'fghjk',
-            // lastName: 'fghjk',
-            // avatar: 'ghjklm'
+            email: req.body.email,
+            password:req.body.password,
+            name: req.body.name,
+            lastName: req.body.lastName,
+            avatar: ''
         });
 
         newUser.save(err => {
@@ -15,42 +15,42 @@ module.exports = (app, userModel, mongo) => {
             res.sendStatus(200)
         });
     });
-
-    app.get("/user", async (req, res) => {
-        let query = await userModel.find({});
+     
+    //Autocomplete search for user;
+    app.get("/user/u/:u",(req, res) => {
+        let query = userModel.find({email:{$regex:'^'+req.params.u}});
         query.exec(function (err, data) {
             res.send(data);
-        });
-
+        }); 
     });
 
-    app.get("/user/:id", async (req, res) => {
-        let id = new mongo.ObjectId(req.params.id)
-        let query = await userModel.find({
-            _id: id
-        });
-        query.exec(function (err, data) {
-            res.send(data);
-        });
-
-    });
-
-    app.delete("/user/:id", async (req, res) => {
+    //Get user data
+    app.get("/user/i/:id",(req, res) => {
         let id = new mongo.ObjectId(req.params.id);
-        let query = await userModel.deleteOne({
+        let query = userModel.find({
             _id: id
         });
         query.exec(function (err, data) {
             res.send(data);
         });
     });
-
-    app.put("/user/pwd/:id", async (req, res) => {
+    //Delete user
+    app.delete("/user/:id", (req, res) => {
+        let id = new mongo.ObjectId(req.params.id);
+        let query = userModel.deleteOne({
+            _id: id
+        });
+        query.exec(function (err, data) {
+            res.send(data);
+        });
+    });
+    //Modify user
+    app.put("/user/pwd/:id", (req, res) => {
         let id = new mongo.ObjectId(req.params.id);
         let modif = {
             password: req.body.password
         }
-        let query = await userModel.updateOne({
+        let query = userModel.updateOne({
             _id: id
         }, modif);
         query.exec(function (err, data) {

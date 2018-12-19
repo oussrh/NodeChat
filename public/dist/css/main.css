@@ -1,40 +1,88 @@
 *{
     margin: 0;
     padding: 0;
+    color: inherit
 }
 body{
     overflow: hidden;
     overflow-y: hidden;
 }
 
-
-.container{
+#chat{
+    z-index: 1;
+}
+#chat .container{
     height: 100vh;
 }
 
-header{
+#chat header{
     height: 10vh;
 }
 
-main{
+#chat main{
     height: 60vh;
 }
 
-aside{
+#chat a{   
+    z-index: 1; 
+}
+
+#chat aside{
     overflow: scroll;
     overflow-x: hidden;
+    z-index: 1;
     
 }
 
-footer{
+#chat footer{
     height: 10vh;
 }
 
-#login{
-    background: forestgreen;
+#cnx{
+    position: absolute;
+    z-index: 10;
     height: 100vh;
     width: 100vw;
     overflow: hidden;
     overflow-x: hidden;
     overflow-y: hidden;
+}
+
+#cnx .login,#cnx .register{
+    padding: 0 40px 0 40px;
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    background: #fff;
+}
+
+#cnx .login{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border-right: 10px solid blue;
+}
+/************************************************************/
+/************************************************************/
+
+#lookForList{
+    display: absolute;
+    z-index: 10;
+}
+
+#lookForList .icon{
+    float: right;
+    color: blueviolet;
+    cursor: pointer;
+}
+
+aside #searchDiv{
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+#searchDiv ul>li{
+    margin-top: 10px !important;
 }

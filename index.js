@@ -13,8 +13,12 @@ app.use(express.static('public'));
 app.use('/', express.static(__dirname + '/public'));
 
 require('./db/dbCnx')(mongoose)
+
 let userModel = require('./db/userSchema');
 require("./routes/usersRoot")(app,userModel,mongo);
+
+let chatModel = require('./db/chatSchema');
+require("./routes/chatsRoot")(app,chatModel, userModel, mongo);
 
 const PORT = 8080; //|| process.env.PORT;
 app.listen(PORT, () => {
