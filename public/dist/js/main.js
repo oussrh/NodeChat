@@ -1,4 +1,4 @@
-let url = "http://localhost:8080";
+let url = "http://localhost:8090";
 let userid = "5c179e7f321c74251f9d5cea"
 //********************************* */
 const addUser = async () =>{
@@ -38,7 +38,6 @@ const lookForUser = async (u) =>{
 }
 
 const showUsersMatch = (user)=>{
-
     let ul = document.getElementById('lookForList');
     ul.style.display = "inherit";
     ul.innerHTML = "";
@@ -65,9 +64,8 @@ const createUserChat = async(i)=>{
         body: JSON.stringify({userId: i.currentTarget.dataset.id,withId: i.currentTarget.id})
     })
     .catch(err => console.warn(err));
-    getChatLsit();
+    getChatLsit();//refresh list
 }
-
 
 const getChatLsit = async() =>{
     let response = await fetch(url+"/chat/i/"+userid,{method:"GET"})
@@ -83,6 +81,7 @@ const showChatList = list =>{
         let a = document.createElement('a');
         a.className = "panel-block";
         a.id = l._id;
+        a.addEventListener("click",openDiscussion);
         let response = await fetch(url+"/chat/with/"+l.withId,{method:"GET"})
         .catch(err => console.warn(err));
         response = await response.json();
@@ -91,4 +90,11 @@ const showChatList = list =>{
     })
 }
 
+const openDiscussion = id => {
+    let section = document.getElementById('msgSec');
+    
+}
+
 getChatLsit();
+//******************************************************* */
+

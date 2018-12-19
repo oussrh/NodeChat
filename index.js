@@ -18,9 +18,12 @@ let userModel = require('./db/userSchema');
 require("./routes/usersRoot")(app,userModel,mongo);
 
 let chatModel = require('./db/chatSchema');
-require("./routes/chatsRoot")(app,chatModel, userModel, mongo);
+require("./routes/chatsRoot")(app,chatModel,userModel,mongo);
 
-const PORT = 8080; //|| process.env.PORT;
+let blablaModel = require('./db/blablaSchema');
+require("./routes/blablaRoot")(app,chatModel,userModel,blablaModel,mongo);
+
+const PORT = 8090; //|| process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running`);
 });

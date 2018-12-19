@@ -86,3 +86,19 @@ aside #searchDiv{
 #searchDiv ul>li{
     margin-top: 10px !important;
 }
+
+#msgSec{
+    height: 100%;
+    padding: 0 !important;
+}
+
+#msgSec .msgflow{
+    height: 90%;
+    background: red;
+    overflow: scroll;
+}
+
+#msgSec .msginput{
+    height: 5vh;
+    padding: 0;
+}
