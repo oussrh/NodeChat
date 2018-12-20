@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 app.use(express.static('public'));
 app.use('/', express.static(__dirname + '/public'));
 
-require('./db/dbCnx')(mongoose)
+require('./db/dbCnx')(mongoose);
 
 let userModel = require('./db/userSchema');
 require("./routes/usersRoot")(app,userModel,mongo);
@@ -23,7 +23,7 @@ require("./routes/chatsRoot")(app,chatModel,userModel,mongo);
 let blablaModel = require('./db/blablaSchema');
 require("./routes/blablaRoot")(app,chatModel,userModel,blablaModel,mongo);
 
-const PORT = 8090; //|| process.env.PORT;
+const PORT = 8080; //|| process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running`);
 });

@@ -12,7 +12,7 @@ module.exports = (app, userModel, mongo) => {
         newUser.save(err => {
             if (err) throw err;
             console.log('user ajouté avec succès !');
-            res.sendStatus(200)
+            res.sendStatus(200);
         });
     });
      
@@ -49,7 +49,7 @@ module.exports = (app, userModel, mongo) => {
         let id = new mongo.ObjectId(req.params.id);
         let modif = {
             password: req.body.password
-        }
+        };
         let query = userModel.updateOne({
             _id: id
         }, modif);
@@ -58,4 +58,4 @@ module.exports = (app, userModel, mongo) => {
         });
     });
 
-}
+};

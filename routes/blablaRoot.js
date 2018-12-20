@@ -24,4 +24,4 @@ module.exports = (app,chatModel,userModel,blablaModel,mongo) => {
         });
     });
    
-}
+};

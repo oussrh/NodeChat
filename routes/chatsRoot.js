@@ -5,7 +5,7 @@ module.exports = (app, chatModel, userModel , mongo) => {
         const newChat = new chatModel({
             userId : new mongo.ObjectId(req.body.userId),
             withId : new mongo.ObjectId(req.body.withId)
-        })
+        });
         newChat.save(err => {
             if (err) throw err;
             console.log('chat ajouté avec succès !');
@@ -44,7 +44,4 @@ module.exports = (app, chatModel, userModel , mongo) => {
         });
 
     });
-
-
-
-}
+};
