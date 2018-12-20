@@ -1,7 +1,7 @@
-module.exports = (app, userModel, mongo) => {
+module.exports = (app,models, mongo) => {
     //Add new user
     app.post("/user",(req, res) => {
-        const newUser = new userModel({
+        const newUser = new models.users({
             email: req.body.email,
             password:req.body.password,
             name: req.body.name,
@@ -18,7 +18,7 @@ module.exports = (app, userModel, mongo) => {
      
     //Autocomplete search for user;
     app.get("/user/u/:u",(req, res) => {
-        let query = userModel.find({email:{$regex:'^'+req.params.u}});
+        let query = models.users.find({email:{$regex:'^'+req.params.u}});
         query.exec(function (err, data) {
             res.send(data);
         }); 
@@ -27,7 +27,7 @@ module.exports = (app, userModel, mongo) => {
     //Get user data
     app.get("/user/i/:id",(req, res) => {
         let id = new mongo.ObjectId(req.params.id);
-        let query = userModel.find({
+        let query = models.users.find({
             _id: id
         });
         query.exec(function (err, data) {
@@ -37,7 +37,7 @@ module.exports = (app, userModel, mongo) => {
     //Delete user
     app.delete("/user/:id", (req, res) => {
         let id = new mongo.ObjectId(req.params.id);
-        let query = userModel.deleteOne({
+        let query = models.users.deleteOne({
             _id: id
         });
         query.exec(function (err, data) {
@@ -50,7 +50,7 @@ module.exports = (app, userModel, mongo) => {
         let modif = {
             password: req.body.password
         };
-        let query = userModel.updateOne({
+        let query = models.users.updateOne({
             _id: id
         }, modif);
         query.exec(function (err, data) {

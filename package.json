@@ -15,7 +15,9 @@
     "bulma": "^0.7.2",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
     "mongo": "^0.1.0",
-    "mongoose": "^5.3.16"
+    "mongoose": "^5.3.16",
+    "require-all": "^3.0.0"
   }
 }

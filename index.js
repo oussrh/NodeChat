@@ -13,15 +13,13 @@ app.use(express.static('public'));
 app.use('/', express.static(__dirname + '/public'));
 
 require('./db/dbCnx')(mongoose);
+let models = require('require-all')(__dirname + '/models');
+ 
+require("./routes/usersRoot")(app,models,mongo);
 
-let userModel = require('./db/userSchema');
-require("./routes/usersRoot")(app,userModel,mongo);
+require("./routes/chatsRoot")(app,models,mongo);
 
-let chatModel = require('./db/chatSchema');
-require("./routes/chatsRoot")(app,chatModel,userModel,mongo);
-
-let blablaModel = require('./db/blablaSchema');
-require("./routes/blablaRoot")(app,chatModel,userModel,blablaModel,mongo);
+require("./routes/blablaRoot")(app,models,mongo);
 
 const PORT = 8080; //|| process.env.PORT;
 app.listen(PORT, () => {
