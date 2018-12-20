@@ -1,7 +1,6 @@
 module.exports = (app,models,mongo) => {
 
     app.post('/msg',(req,res)=>{
-        console.log(req.body.msg);
         let newMsg = new models.blabla({
             userId : new mongo.ObjectId(req.body.userId),
             chatId : new mongo.ObjectId(req.body.chatId),

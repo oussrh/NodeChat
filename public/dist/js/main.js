@@ -1,13 +1,13 @@
 let url = "http://localhost:8080";
 let userid = "5c179e7f321c74251f9d5cea";
 //********************************* */
-//************add new user**************** */
+//************Register new user**************** */
 const addUser = async () => {
     let name = await document.getElementById('name').value;
     let lastname = await document.getElementById('lname').value;
     let email = await document.getElementById('email').value;
     let password = await document.getElementById('pwd').value;
-    await fetch(url + "/user", {
+    await fetch(url + "/user/register", {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
@@ -27,6 +27,8 @@ formRegisterSubmit.addEventListener('click', function (e) {
     e.preventDefault();
     addUser();
 });
+//************Login user**************** */
+
 
 //******************************************************* */
 
