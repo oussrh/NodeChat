@@ -29,12 +29,18 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
                         newUser.save(err => {
                             if (err) throw err;
                             console.log('user ajouté avec succès !');
-                            res.sendStatus(200);
                         });
                     });
-
+                    //get last user added
+                    let user = models.users.findOne({
+                        email: email
+                    });
+                    return res.status(200).json({
+                        'userId': user._id,
+                        'token': jwt.UserToken(user)
+                    });
                 } else {
-                    console.log('user alerdy exist');
+                    console.log('email alerdy exist');
                     return res.status(409).json({
                         'error': 'user alerdy exist'
                     });
@@ -46,7 +52,6 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
                 });
             });
     });
-
     //Login user
     app.post("/user/login", (req, res) => {
         let email = req.body.email;
@@ -65,9 +70,10 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
                 if (u) {
                     bcrypt.compare(password, u.password, (errPwd, resPwd) => {
                         if (resPwd) {
+                            //creation of jwt token
                             return res.status(200).json({
                                 'userId': u._id,
-                                'token' : jwt.UserToken(u)
+                                'token': jwt.UserToken(u)
                             });
                         } else {
                             console.log('password invalid');
@@ -129,5 +135,4 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
             res.send(data);
         });
     });
-
 };

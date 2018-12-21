@@ -6,7 +6,7 @@ const addUser = async () => {
     let lastname = await document.getElementById('lname').value;
     let email = await document.getElementById('email').value;
     let password = await document.getElementById('pwd').value;
-    await fetch(url + "/user/register", {
+    let response = await fetch(url + "/user/register", {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
@@ -19,6 +19,8 @@ const addUser = async () => {
             })
         })
         .catch(error => console.warn(error));
+    response = await response.json();
+    localStorage.setItem('user', JSON.stringify(response));
     document.getElementById('cnx').style.display = "none";
 }
 let formRegisterSubmit = document.getElementById('submitRegister');
@@ -60,8 +62,9 @@ const logout = () => {
 let userLogoutBt = document.getElementById('userLogout');
 userLogoutBt.addEventListener('click', logout);
 //******************************************************* */
+//*******************Test if loged********************** */
 if (localStorage.getItem("user")) {
-    let authData = JSON.parse(localStorage.getItem("user"));
+    let authData = JSON.parse(localStorage.getItem("user"));//JWT token
     userid = authData.userId;
     userToken = authData.token;
     document.getElementById('cnx').style.display = "none";
