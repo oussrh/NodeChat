@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div id="cnx" >
+    <div id="cnx">
         <div class="container is-fluid">
             <main class="columns">
                 <section class="column is-6 login">
@@ -22,7 +22,7 @@
                         <div class="field">
                             <label class="label">Email</label>
                             <p class="control has-icons-left has-icons-right">
-                                <input class="input" type="email" placeholder="Email">
+                                <input class="input" type="email" id="loginEmail" placeholder="Email">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-envelope"></i>
                                 </span>
@@ -31,7 +31,7 @@
                         <div class="field">
                             <label class="label">Password</label>
                             <p class="control has-icons-left">
-                                <input class="input" type="password" placeholder="Password">
+                                <input class="input" type="password" id="loginPwd" placeholder="Password">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-lock"></i>
                                 </span>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="field">
                             <p class="control">
-                                <button class="button is-success">
+                                <button class="button is-success" id="submitLogin">
                                     Login
                                 </button>
                             </p>
@@ -108,6 +108,9 @@
                     <a class="navbar-item" href="https://bulma.io">
                         NodeChat
                     </a>
+                    <span class="navbar-item" id="userLogout">
+                        Logout
+                    </span>
                     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
                         <span aria-hidden="true"></span>
                         <span aria-hidden="true"></span>

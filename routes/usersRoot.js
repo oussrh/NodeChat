@@ -58,13 +58,13 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
                 'error': 'missing parameters'
             });
         }
-        models.user.findOne({
+        models.users.findOne({
                 email: email
             })
             .then(u => {
                 if (u) {
-                    bcrypt.compare(password, u.password, (err, res) => {
-                        if (res) {
+                    bcrypt.compare(password, u.password, (errPwd, resPwd) => {
+                        if (resPwd) {
                             return res.status(200).json({
                                 'userId': u._id,
                                 'token' : jwt.UserToken(u)
@@ -96,7 +96,6 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
             res.send(data);
         });
     });
-
     //Get user data
     app.get("/user/i/:id", (req, res) => {
         let id = new mongo.ObjectId(req.params.id);
