@@ -1,4 +1,5 @@
 let url = "http://localhost:8080";
+let socket = io.connect(url);
 //**********************************************/
 //************Register new user*****************/
 const addUser = async () => {
@@ -64,10 +65,13 @@ userLogoutBt.addEventListener('click', logout);
 //******************************************************* */
 //*******************Test if loged********************** */
 if (localStorage.getItem("user")) {
-    let authData = JSON.parse(localStorage.getItem("user"));//JWT token
+
+    let authData = JSON.parse(localStorage.getItem("user")); //JWT token
     userid = authData.userId;
     userToken = authData.token;
+
     document.getElementById('cnx').style.display = "none";
+
     // Look for a user (search input)
     const lookForUser = async (u) => {
         user = u.currentTarget.value;
@@ -101,12 +105,12 @@ if (localStorage.getItem("user")) {
 
     const createUserChat = async (i) => {
         await fetch(url + '/chat/i', {
-                metloginPwdhod: "POST",
+                method: "POST",
                 headers: {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    userId: i.currentTarget.dataset.id,
+                    userId: userid,
                     withId: i.currentTarget.id
                 })
             })
@@ -129,7 +133,7 @@ if (localStorage.getItem("user")) {
             panel.innerHTML = "";
             let a = document.createElement('a');
             a.className = "panel-block";
-            a.id = l._id; //chat id;
+            a.id = l.withId;
             a.addEventListener("click", openDiscussion);
             let response = await fetch(url + "/chat/with/" + l.withId, {
                     method: "GET"
@@ -143,9 +147,9 @@ if (localStorage.getItem("user")) {
     //*********************************************************************/
     const openDiscussion = async i => {
         let input = document.querySelector('.inputmsg');
-        let idchat = i.currentTarget.id;
-        input.id = idchat;
-        let response = await fetch(`${url}/msg/${idchat}`, {
+        let withId = i.currentTarget.id;
+        input.id = withId;
+        let response = await fetch(`${url}/msg/${withId}/${userid}`, {
                 method: "GET"
             })
             .catch(err => console.warn(err));
@@ -162,6 +166,11 @@ if (localStorage.getItem("user")) {
             let p = document.createElement('p');
             p.className = "msgChat"
             p.innerHTML = m.msg;
+            if(m.senderId == userid){
+                p.style.color = 'red';
+            }else{
+                p.style.color = 'green';
+            }
             section.appendChild(p);
         })
 
@@ -172,33 +181,46 @@ if (localStorage.getItem("user")) {
     getChatLsit();
     //********************************************************************/
 
-    const addMsg = async m => {
-        let idchat = m.currentTarget.id;
-        await fetch(`${url}/msg`, {
-                method: "POST",
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    userId: userid,
-                    chatId: m.currentTarget.id,
-                    msg: m.currentTarget.value
-                })
-            })
-            .catch(err => console.warn(err));
-        let response = await fetch(`${url}/msg/${idchat}`, {
-                method: "GET"
-            })
-            .catch(err => console.warn(err));
-        response = await response.json();
-        showDiscussion(response);
+    // const addMsg = async m => {
+    //     let idchat = m.currentTarget.id;
+    //     await fetch(`${url}/msg`, {
+    //             method: "POST",
+    //             headers: {
+    //                 'Content-type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 userId: userid,
+    //                 chatId: m.currentTarget.id,
+    //                 msg: m.currentTarget.value
+    //             })
+    //         })
+    //         .catch(err => console.warn(err));
+    //     let response = await fetch(`${url}/msg/${idchat}`, {
+    //             method: "GET"
+    //         })
+    //         .catch(err => console.warn(err));
+    //     response = await response.json();
+    //     showDiscussion(response);
 
+    // }
+
+    const addMsg = m => {
+        socket.emit('chat', {
+            senderId: userid,
+            receiverId: m.currentTarget.id,
+            msg: m.currentTarget.value
+        });
     }
     document.querySelector('.inputmsg').addEventListener('keyup', (e) => {
         if (e.keyCode === 13) addMsg(e)
     })
 
-} else {
+    socket.on('chat', async (data) => {
+        console.log(data);
+            showDiscussion(data);
+    });
+
+} else {//localstorage not defind 
     document.getElementById('cnx').style.display = "block";
 }
 /********************* */
