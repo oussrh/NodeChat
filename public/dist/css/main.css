@@ -7,6 +7,21 @@ body{
     overflow: hidden;
     overflow-y: hidden;
 }
+h1{
+    text-align: center;
+    font : bold 50px Arial;
+    margin-bottom: 70px;
+}
+
+h1 img{
+    width: 40px;
+}
+
+h2{
+    font : bold 25px Arial;
+    border-bottom: 2px solid #000;
+    margin-bottom: 20px;
+}
 
 #chat{
     z-index: 1;
@@ -64,6 +79,10 @@ body{
     -webkit-box-sizing: border-box;
     border-right: 10px solid blue;
 }
+
+#logStatus,#registerStatus{
+    display: none;
+}
 /************************************************************/
 /************************************************************/
 
@@ -112,4 +131,6 @@ aside #searchDiv{
     color : #fff;
     font: 12px Arial;
     max-width: 40%;
+    word-break: break-all;
 }
+

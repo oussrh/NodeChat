@@ -11,7 +11,7 @@ const app = express();
 
 const port = 8080; //|| process.env.PORT;
 let server = app.listen(port, () => {
-  console.log(`Server running : Port `+port);
+  console.log(`Server running : Port ` + port);
 });
 
 let io = socket(server);
@@ -25,10 +25,9 @@ let models = require('require-all')(__dirname + '/models');
 //Routes
 app.use(express.static('public'));
 app.use('/', express.static('./public'));
- 
-require("./routes/usersRoot")(app,models,mongo,bcrypt,jwt);
 
-require("./routes/chatsRoot")(app,models,mongo);
+require("./routes/usersRoot")(app, models, mongo, bcrypt, jwt);
 
-require("./routes/blablaRoot")(app,models,mongo,io); 
+require("./routes/chatsRoot")(app, models, mongo);
 
+require("./routes/blablaRoot")(app, models, mongo, io);

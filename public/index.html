@@ -18,21 +18,23 @@
         <div class="container is-fluid">
             <main class="columns">
                 <section class="column is-6 login">
+                    <h1><img src="dist/img/nodelogo.png"/>NodeChat</h1>
                     <h2>Login</h2>
+                    <section id="loginStatus"></section>
                     <form id="formLogin">
                         <div class="field">
-                            <label class="label">Email</label>
+                            <label class="label">Email*</label>
                             <p class="control has-icons-left has-icons-right">
-                                <input class="input" type="email" id="loginEmail" placeholder="Email">
+                                <input class="input" type="email" id="loginEmail" placeholder="Email" required>
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-envelope"></i>
                                 </span>
                             </p>
                         </div>
                         <div class="field">
-                            <label class="label">Password</label>
+                            <label class="label">Password*</label>
                             <p class="control has-icons-left">
-                                <input class="input" type="password" id="loginPwd" placeholder="Password">
+                                <input class="input" type="password" id="loginPwd" placeholder="Password" required>
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-lock"></i>
                                 </span>
@@ -49,25 +51,28 @@
                 </section>
                 <section class="column is-6 register">
                     <h2>Register</h2>
+                    <section id="registerStatus"></section>
                     <form id="formRegister">
                         <div class="field">
                             <label class="label">Name</label>
                             <div class="control">
-                                <input class="input" id="name" type="text" placeholder="Name" value="oussama">
+                                <input class="input" id="name" type="text" placeholder="Name" value="oussama" required>
                             </div>
                         </div>
 
                         <div class="field">
                             <label class="label">Lastname</label>
                             <div class="control">
-                                <input class="input" id="lname" type="text" placeholder="Lastname" value="rhoni">
+                                <input class="input" id="lname" type="text" placeholder="Lastname" value="rhoni"
+                                    required>
                             </div>
                         </div>
 
                         <div class="field">
                             <label class="label">Email</label>
                             <div class="control has-icons-left has-icons-right">
-                                <input class="input" id="email" type="email" placeholder="Email" value="ousrh7@gmail.com">
+                                <input class="input" id="email" type="email" placeholder="Email" value="ousrh7@gmail.com"
+                                    required>
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-envelope"></i>
                                 </span>
@@ -76,7 +81,8 @@
                         <div class="field">
                             <label class="label">Password</label>
                             <p class="control has-icons-left">
-                                <input class="input" type="password" id="pwd" placeholder="Password" value="azerty">
+                                <input class="input" type="password" id="pwd" placeholder="Password" value="azerty"
+                                    required->
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-lock"></i>
                                 </span>
@@ -106,12 +112,12 @@
         <header class="level">
             <nav class="navbar" role="navigation" aria-label="main navigation">
                 <div class="navbar-brand">
-                    <a class="navbar-item" href="https://bulma.io">
-                        NodeChat
+                    <a class="navbar-item" href="#">
+                        <img src="dist/img/nodelogo.png"/>NodeChat
                     </a>
-                    <span class="navbar-item" id="userLogout">
+                    <a class="navbar-item" id="userLogout">
                         Logout
-                    </span>
+                    </a>
                     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
                         <span aria-hidden="true"></span>
                         <span aria-hidden="true"></span>
@@ -157,6 +163,7 @@
             </div>
         </footer>
     </div>
+    <script src="dist/js/cnx.js"></script>
     <script src="dist/js/main.js"></script>
 </body>
 

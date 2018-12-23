@@ -8,8 +8,7 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
         let avatar = req.body.avatar;
 
         if (email == null || password == null || email == '' || password == '') {
-            console.log('missing parameters');
-            return res.status(400).json({
+            return res.json({
                 'error': 'missing parameters'
             });
         }
@@ -40,8 +39,7 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
                         'token': jwt.UserToken(user)
                     });
                 } else {
-                    console.log('email alerdy exist');
-                    return res.status(409).json({
+                    return res.json({
                         'error': 'user alerdy exist'
                     });
                 }
@@ -58,8 +56,7 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
         let password = req.body.password;
 
         if (email == null || password == null || email == '' || password == '') {
-            console.log('missing parameters');
-            return res.status(400).json({
+            return res.json({
                 'error': 'missing parameters'
             });
         }
@@ -70,18 +67,21 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
                 if (u) {
                     bcrypt.compare(password, u.password, (errPwd, resPwd) => {
                         if (resPwd) {
-                            //creation of jwt token
                             return res.status(200).json({
                                 'userId': u._id,
                                 'token': jwt.UserToken(u)
                             });
                         } else {
-                            console.log('password invalid');
+                            return res.json({
+                                'error': 'password invalid'
+                            });
                         }
 
                     });
                 } else {
-                    console.log('email invalid');
+                    return res.json({
+                        'error': 'email invalid'
+                    });
                 }
             })
             .catch(err => {
@@ -92,11 +92,19 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
     });
     //**********************************************************************/
     //Autocomplete search for user;
-    app.get("/user/u/:u", (req, res) => {
+    app.get("/user/u/:u/:id", (req, res) => {
         let query = models.users.find({
-            email: {
-                $regex: '^' + req.params.u
-            }
+            $and: [{
+                    _id: {
+                        $nin: req.params.id
+                    }
+                },
+                {
+                    email: {
+                        $regex: '^' + req.params.u
+                    }
+                }
+            ]
         });
         query.exec(function (err, data) {
             res.send(data);
