@@ -94,13 +94,15 @@ const connect = () => {
             let section = document.getElementById('msgflow');
             section.innerHTML = ''
             d.map(m => {
-                let p = document.createElement('p');
-                p.className = "msgChat"
-                p.innerHTML = m.msg;
+                let p = document.createElement('div');
+                p.className = "msgChat";
+                let msgDate = new Date(m.Date);
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+                p.innerHTML = `<p>${m.msg}</p><span>${msgDate.toLocaleDateString('fr-FR',options)}</span>`;
                 if (m.senderId == userid) {
-                    p.style.color = 'red';
+                    p.className = 'msgChat leftChat';
                 } else {
-                    p.style.color = 'green';
+                    p.className = 'msgChat rightChat';
                 }
                 section.appendChild(p);
             })

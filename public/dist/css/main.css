@@ -67,7 +67,7 @@ h2{
     padding: 0 40px 0 40px;
     height: 100vh;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     flex-direction: column;
     justify-content: center;
     background: #fff;
@@ -111,6 +111,12 @@ aside #searchDiv{
     padding: 0 !important;
 }
 
+#msgflow{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
 #msgSec #msgflow{
     height: 54vh;
     background:rgb(180, 180, 180);
@@ -122,15 +128,31 @@ aside #searchDiv{
     padding: 0;
 }
 
-.msgChat{
+#msgflow .msgChat{
     padding: 10px;
-    margin-left: 20px;
-    margin-top :10px;
     border-radius: 20px;
-    background: rgb(36, 167, 255);
-    color : #fff;
-    font: 12px Arial;
-    max-width: 40%;
+    background: #fff;
+    font: 15px Arial;
     word-break: break-all;
+    max-width: 30%;
 }
 
+#msgflow span{
+    text-align: right !important;
+    text-transform: capitalize;
+    font: bold 10px Arial;
+    color: gray;
+}
+
+#msgflow .leftChat{
+    color : #000;
+    align-self: flex-start;
+    margin: 20px 0 0 10px;
+    background: #9ed3ff;
+}
+
+#msgflow .rightChat{
+    color : #000;
+    align-self: flex-end;
+    margin: 20px 10px 0 0;
+}

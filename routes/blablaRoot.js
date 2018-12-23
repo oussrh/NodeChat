@@ -41,7 +41,6 @@ module.exports = (app, models, mongo, io) => {
                 if (err) throw err;
                 console.log('msg ajouté avec succès !');
             });
-
             await models.blabla.find({
                 $or: [{
                         $and: [{
