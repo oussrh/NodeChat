@@ -2,31 +2,39 @@ module.exports = (app, models, mongo) => {
 
     //ADD new chat
     app.post("/chat/i", (req, res) => {
-        let userId = req.body.userId;
-        let withId = req.body.withId;
-        let chat = models.chats({
-            userId: userId,
-            withId: withId
-        })
-        if (!chat) {
-            const newChat = new models.chats({
-                userId: new mongo.ObjectId(userId),
-                withId: new mongo.ObjectId(withId)
-            });
-            newChat.save(err => {
-                if (err) throw err;
-                console.log('chat ajouté avec succès !');
-                res.sendStatus(200);
-            });
-        }
+        let userId = new mongo.ObjectId(req.body.userId);
+        let withId = new mongo.ObjectId(req.body.withId);
+        console.log(userId,withId)
+        let chat = models.chats.find({
+            $and: [{
+                    userId: userId
+                },
+                {
+                    withId: withId
+                }
+            ]
+        });
+        chat.exec( (err, data) => {
+            if (!data.length) {
+                const newChat = new models.chats({
+                    userId: userId,
+                    withId: withId
+                });
+                newChat.save(err => {
+                    if (err) throw err;
+                    console.log('chat ajouté avec succès !');
+                    res.sendStatus(200);
+                });
+            }
+        });
     });
     //GET info chat
-    app.get("/chat/i/:id", (req, res) => {
+    app.get("/chat/i/:id/", (req, res) => {
         let id = new mongo.ObjectId(req.params.id);
         let query = models.chats.find({
             userId: id
         });
-        query.exec(function (err, data) {
+        query.exec( (err, data) => {
             res.send(data);
         });
     });
@@ -36,7 +44,24 @@ module.exports = (app, models, mongo) => {
         let query = models.users.find({
             _id: id
         });
-        query.exec(function (err, data) {
+        query.exec( (err, data) => {
+            res.send(data);
+        });
+    });
+    //Check if existe
+    app.get("/chat/:withid/:iduser", (req, res) => {
+        let withid = new mongo.ObjectId(req.params.withid);
+        let iduser = new mongo.ObjectId(req.params.iduser);
+        let query = models.chats.find({
+            $and: [{
+                    withId: withid
+                },
+                {
+                    userId: iduser
+                }
+            ]
+        });
+        query.exec( (err, data) => {
             res.send(data);
         });
     });
@@ -47,7 +72,7 @@ module.exports = (app, models, mongo) => {
         let query = models.chats.deleteOne({
             _id: id
         });
-        query.exec(function (err, data) {
+        query.exec( (err, data) => {
             res.send(data);
         });
 

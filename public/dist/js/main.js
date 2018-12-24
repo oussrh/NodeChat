@@ -1,3 +1,24 @@
+const testToken = async () => {
+    let authData = JSON.parse(localStorage.getItem("user")); //JWT token
+    userToken = authData.token;
+    await fetch(`${url}/user/cnx`, {
+        method: "POST",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            token:userToken
+        })
+    })
+    .then( t => t.json())
+    .then( token => {
+        if(token.err === "expired"){
+            localStorage.clear();
+            document.getElementById('cnx').style.display = "block";
+        }
+    })
+    .catch(err => console.warn(err));
+};
 const connect = () => {
     if (localStorage.getItem("user") !== null) {
 
@@ -8,6 +29,7 @@ const connect = () => {
 
         //*******************************************************************/
         const getChatLsit = async () => {
+            testToken();
             let response = await fetch(url + "/chat/i/" + userid, {
                     method: "GET"
                 })
@@ -25,7 +47,9 @@ const connect = () => {
                     })
                     .catch(err => console.warn(err));
                 response = await response.json();
-                a.innerHTML = response[0].name;
+                a.innerHTML = /*html*/ `
+                    <p class="contactName">${response[0].name}</p>
+                    <span class="contactEmail">${response[0].email}</span>`;
                 panel.appendChild(a);
             });
         }
@@ -33,6 +57,7 @@ const connect = () => {
         ///***********************************************************/
         // Look for a user (search input)
         const lookForUser = async (u) => {
+            testToken();
             user = u.currentTarget.value;
             let response = await fetch(`${url}/user/u/${user}/${userid}`, {
                     method: "GET",
@@ -43,14 +68,14 @@ const connect = () => {
         }
 
         const showUsersMatch = (user) => {
+            testToken();
             let ul = document.getElementById('lookForList');
             ul.style.display = "inherit";
             ul.innerHTML = "";
             user.map(u => {
                 let li = document.createElement('li');
                 li.innerHTML = `${u.email}<span class="icon"><i class="fas fa-plus"></i></span></li>`;
-                li.id = u._id;
-                li.dataset.id = userid;
+                li.id = u._id; //with id
                 li.addEventListener('click', createUserChat);
                 ul.appendChild(li);
             });
@@ -60,23 +85,45 @@ const connect = () => {
             let ul = document.getElementById('lookForList');
             u.currentTarget.value !== '' ? lookForUser(u) : ul.style.display = "none";
         });
+        document.getElementById('lookforinput').addEventListener('click', function (u) {
+            let ul = document.getElementById('lookForList');
+            ul.style.display = "none";
+        });
+
         //******************************************************************** */
         const createUserChat = async (i) => {
-            await fetch(url + '/chat/i', {
-                    method: "POST",
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        userId: userid,
-                        withId: i.currentTarget.id
+            let idwith = i.currentTarget.id;
+            let response = await fetch(`${url}/chat/${idwith}/${userid}`, {
+                method: 'GET'
+            });
+            response = await response.json();
+            if (!response.length) {
+                await fetch(`${url}/chat/i`, {
+                        method: "POST",
+                        headers: {
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            userId: userid,
+                            withId: idwith
+                        })
                     })
-                })
-                .catch(err => console.warn(err));
-            getChatLsit(); //refresh list
+                    .catch(err => console.warn(err));
+                getChatLsit(); //refresh list
+            } else {
+                let msg = await fetch(`${url}/msg/${idwith}/${userid}`, {
+                        method: "GET"
+                    })
+                    .catch(err => console.warn(err));
+                msg = await msg.json();
+                let input = document.querySelector('.inputmsg');
+                input.id = idwith;
+                showDiscussion(msg)
+            }
         }
         //*********************************************************************/
         const openDiscussion = async i => {
+            testToken();
             let input = document.querySelector('.inputmsg');
             let withId = i.currentTarget.id;
             input.id = withId;
@@ -96,9 +143,29 @@ const connect = () => {
             d.map(m => {
                 let p = document.createElement('div');
                 p.className = "msgChat";
+                let today = new Date();
                 let msgDate = new Date(m.Date);
-                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-                p.innerHTML = `<p>${m.msg}</p><span>${msgDate.toLocaleDateString('fr-FR',options)}</span>`;
+                let timeDiff = today.getDate() - msgDate.getDate();
+                let diffYears = today.getFullYear() - msgDate.getFullYear();
+                var optionsFull = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric'
+                };
+                var optionsTime = {
+                    hour: 'numeric',
+                    minute: 'numeric'
+                };
+                if (timeDiff === 0 && diffYears === 0) {
+                    p.innerHTML = `<p>${m.msg}</p><span>Aujourd'hui à ${msgDate.toLocaleTimeString('fr-FR',optionsTime)}</span>`;
+                } else if (timeDiff === 1 && diffYears === 0) {
+                    p.innerHTML = `<p>${m.msg}</p><span>Hier à ${msgDate.toLocaleTimeString('fr-FR',optionsTime)}</span>`;
+                } else {
+                    p.innerHTML = `<p>${m.msg}</p><span>${msgDate.toLocaleDateString('fr-FR',optionsFull)}</span>`;
+                }
                 if (m.senderId == userid) {
                     p.className = 'msgChat leftChat';
                 } else {
@@ -106,7 +173,7 @@ const connect = () => {
                 }
                 section.appendChild(p);
             })
-
+            input.focus();
             section.scrollTop = section.scrollHeight; //scroll down
         }
         //********************************************************************/
@@ -118,7 +185,14 @@ const connect = () => {
             });
         }
         document.querySelector('.inputmsg').addEventListener('keyup', (e) => {
-            if (e.keyCode === 13) addMsg(e)
+            if (e.keyCode === 13) {
+                let msg = e.currentTarget.value;
+                if(msg.trim() !== ""){
+                    addMsg(e)
+                }
+                
+            }
+            
         })
 
         socket.on('chat', async (data) => {

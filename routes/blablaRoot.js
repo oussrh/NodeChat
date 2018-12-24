@@ -19,17 +19,13 @@ module.exports = (app, models, mongo, io) => {
                     }]
                 }
             ]
-        }).sort({
-            date: -1
-        });
+        }).sort({ Date: 1 });
         query.exec(function (err, data) {
             res.send(data);
         });
     });
 
-    io.on('connection', (socket) => {
-        console.log('made socket connection', socket.id);
-
+    io.on('connection', (socket) => {//socket connection
         socket.on('chat', async (data) => {
             let newMsg = new models.blabla({
                 senderId: new mongo.ObjectId(data.senderId),
@@ -39,7 +35,7 @@ module.exports = (app, models, mongo, io) => {
 
             await newMsg.save(err => {
                 if (err) throw err;
-                console.log('msg ajouté avec succès !');
+                //msg added
             });
             await models.blabla.find({
                 $or: [{

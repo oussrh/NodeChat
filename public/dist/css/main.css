@@ -134,7 +134,7 @@ aside #searchDiv{
     background: #fff;
     font: 15px Arial;
     word-break: break-all;
-    max-width: 30%;
+    max-width: 40%;
 }
 
 #msgflow span{
@@ -155,4 +155,18 @@ aside #searchDiv{
     color : #000;
     align-self: flex-end;
     margin: 20px 10px 0 0;
+}
+
+#chatsList a{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#chatsList a .contactName{
+    text-transform: capitalize;
+}
+#chatsList a .contactEmail{
+    color: gray;
+    font: bold 10px Arial;
 }

@@ -83,3 +83,5 @@ const logout = () => {
 }
 let userLogoutBt = document.getElementById('userLogout');
 userLogoutBt.addEventListener('click', logout);
+
+//**********************Logout****************************/

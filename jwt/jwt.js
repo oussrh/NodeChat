@@ -10,5 +10,15 @@ module.exports = {
         {
             expiresIn: "1h"
         });
+    },
+
+    checkToken : (token) =>{
+        return jwt.verify(token,JWT_SECRET, (err, res)=>{
+            if(res != undefined)
+            return res;
+            else{
+            return {'err':"expired"}
+            }
+        });
     }
 };

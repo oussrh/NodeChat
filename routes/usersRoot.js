@@ -27,7 +27,7 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
                         });
                         newUser.save(err => {
                             if (err) throw err;
-                            console.log('user ajouté avec succès !');
+                            //user added
                         });
                     });
                     //get last user added
@@ -105,7 +105,7 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
                     }
                 }
             ]
-        });
+        }).select('_id email name lastName');//fields to get
         query.exec(function (err, data) {
             res.send(data);
         });
@@ -115,7 +115,7 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
         let id = new mongo.ObjectId(req.params.id);
         let query = models.users.find({
             _id: id
-        });
+        }).select('_id email name lastName');//fields to get
         query.exec(function (err, data) {
             res.send(data);
         });
@@ -143,4 +143,13 @@ module.exports = (app, models, mongo, bcrypt, jwt) => {
             res.send(data);
         });
     });
+
+    //check cnx
+    app.post('/user/cnx',(req,res)=>{
+        let token = req.body.token;
+         res.send(jwt.checkToken(token));
+    });
 };
+
+//**********************************************************/
+
