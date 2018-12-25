@@ -24,7 +24,7 @@ let models = require('require-all')(__dirname + '/models');
 
 //Routes
 app.use(express.static('public'));
-app.use('/', express.static('./public'));
+app.use('/', express.static(__dirname + '/public'));
 
 require("./routes/usersRoot")(app, models, mongo, bcrypt, jwt);
 
