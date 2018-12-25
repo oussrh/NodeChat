@@ -19,12 +19,13 @@ let io = socket(server);
 app.use(cors());
 app.use(bodyParser.json());
 
-require('./db/dbCnx')(mongoose);
-let models = require('require-all')(__dirname + '/models');
 
-//Routes
 app.use(express.static('public'));
 app.use('/', express.static(__dirname + '/public'));
+
+//Routes
+require('./db/dbCnx')(mongoose);
+let models = require('require-all')(__dirname + '/models');
 
 require("./routes/usersRoot")(app, models, mongo, bcrypt, jwt);
 
